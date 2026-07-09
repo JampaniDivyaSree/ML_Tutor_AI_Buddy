@@ -58,9 +58,13 @@ PERSONAS = {
     "🌍 Real World Example": REAL_WORLD_EXAMPLE_PERSONA,
 }
 
-KICKOFF_MESSAGE = (
-    "Greet the student and ask about their current knowledge level, as instructed."
-)
+# Mode-specific kickoff messages
+KICKOFF_MESSAGES = {
+    "📘 Explanation Mode": "Hello! 👋 Please start by selecting your knowledge level (Beginner, Intermediate, Advanced). Then tell me which ML topic you'd like explained.",
+    "📝 Quiz Mode": "Hi there! 👋 First, please select your knowledge level (Beginner, Intermediate, Advanced). Then tell me which ML topic you'd like to be quizzed on.",
+    "❓ Ask Anything": "Hello! 👋 Feel free to ask me about any topic you’re curious about, and I’ll explain it simply.",
+    "🌍 Real World Example": "Hi! 👋 Please choose a Machine Learning topic, and I’ll give you a practical real-world example of it.",
+}
 
 # ---- Wrapper so send_message()/.text interface stays consistent ----
 class GroqChat:
@@ -99,7 +103,7 @@ if st.session_state.get("active_mode") != activity:
 if "chat" not in st.session_state:
     st.session_state.chat = GroqChat(PERSONAS[activity])
     with st.spinner("ML_Tutor is getting ready..."):
-        greeting = st.session_state.chat.send_message(KICKOFF_MESSAGE)
+        greeting = st.session_state.chat.send_message(KICKOFF_MESSAGES[activity])
     st.session_state.messages = [("ML_Tutor", greeting.text)]
 
 # Render conversation so far
